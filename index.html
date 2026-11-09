@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="MusicWhale">
+  <title>MusicWhale | Guitar & Music Store</title>
+  <style>
+    :root{--bg:#101114;--panel:#191b20;--panel2:#20232a;--text:#f4f1eb;--muted:#a5a6ad;--accent:#f2a93b;--line:#30323a}
+    *{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:var(--bg);color:var(--text);font-family:Tahoma,Arial,sans-serif;line-height:1.6}
+    a{color:inherit;text-decoration:none} button,input{font:inherit} .wrap{width:min(1160px,92%);margin:auto}
+    header{position:sticky;top:0;z-index:10;background:#101114eF;border-bottom:1px solid var(--line);backdrop-filter:blur(12px)}
+    .nav{height:72px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+    .logo{font-weight:900;letter-spacing:2px;font-size:1.15rem}.logo span{color:var(--accent)}
+    nav{display:flex;gap:26px;color:#d5d3ce;font-size:.94rem} nav a:hover{color:var(--accent)}
+    .cart{border:1px solid var(--line);border-radius:999px;padding:8px 14px;background:var(--panel);white-space:nowrap}
+    .cart b{color:var(--accent);margin-left:5px}
+    .hero{min-height:510px;display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:30px;padding:65px 0}
+    .eyebrow{color:var(--accent);font-weight:bold;letter-spacing:2px;font-size:.8rem;text-transform:uppercase}
+    h1{font-size:clamp(2.7rem,6vw,5.3rem);line-height:1.03;margin:18px 0;letter-spacing:-2px}
+    h1 em{font-style:normal;color:var(--accent)} .hero p{color:var(--muted);max-width:510px;font-size:1.05rem}
+    .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+    .btn{display:inline-block;padding:12px 21px;border-radius:7px;font-weight:bold;border:1px solid var(--accent);cursor:pointer;transition:.2s}
+    .primary{background:var(--accent);color:#17130d}.primary:hover{background:#ffc46b;transform:translateY(-2px)}
+    .secondary{color:var(--text);background:transparent}.secondary:hover{background:var(--panel2)}
+    .hero-art{position:relative;min-height:360px;border-radius:18px;overflow:hidden;background:linear-gradient(135deg,#35302a,#17191e);display:flex;align-items:center;justify-content:center}
+    .hero-art img{width:100%;height:100%;max-height:440px;object-fit:cover;opacity:.82;position:absolute;inset:0}
+    .hero-label{position:absolute;bottom:20px;left:20px;background:#101114d9;padding:12px 16px;border-left:3px solid var(--accent)}
+    section{padding:54px 0}.section-head{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:25px}
+    h2{font-size:2rem;margin:5px 0}.section-head p{margin:0;color:var(--muted)}
+    .filters{display:flex;gap:9px;flex-wrap:wrap;margin:0 0 22px}
+    .filter{background:var(--panel);color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:8px 15px;cursor:pointer}
+    .filter.active,.filter:hover{background:var(--accent);border-color:var(--accent);color:#17130d}
+    .products{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .product{background:var(--panel);border:1px solid var(--line);border-radius:13px;overflow:hidden;transition:.2s}
+    .product:hover{transform:translateY(-4px);border-color:#6c5535}
+    .product img{width:100%;height:220px;object-fit:cover;background:#27282d;display:block}
+    .product-info{padding:17px}.tag{color:var(--accent);font-size:.76rem;font-weight:bold;letter-spacing:1px}
+    .product h3{margin:5px 0;font-size:1.1rem}.product p{color:var(--muted);font-size:.9rem;min-height:44px;margin:5px 0 14px}
+    .product-bottom{display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .price{font-weight:bold;font-size:1.12rem}.add{border:0;background:var(--accent);color:#17130d;padding:9px 12px;border-radius:6px;font-weight:bold;cursor:pointer}.add:hover{background:#ffc46b}
+    .feature-band{background:var(--panel);border-block:1px solid var(--line)}
+    .features{display:grid;grid-template-columns:repeat(3,1fr);gap:25px;padding:30px 0}
+    .feature strong{display:block;margin:8px 0 3px}.feature p{color:var(--muted);margin:0;font-size:.9rem}
+    .icon{font-size:1.6rem;color:var(--accent)}
+    .about{display:grid;grid-template-columns:1fr 1fr;gap:35px;align-items:center}
+    .about img{width:100%;height:300px;object-fit:cover;border-radius:13px}
+    .about p{color:var(--muted)}
+    .contact{background:linear-gradient(120deg,#292117,#191b20);border:1px solid #5b4425;border-radius:16px;padding:34px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+    .contact p{color:var(--muted);margin-bottom:0}
+    footer{border-top:1px solid var(--line);padding:25px 0;color:var(--muted);font-size:.85rem;margin-top:55px}
+    .footer-inner{display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap}
+    #toast{position:fixed;bottom:22px;right:22px;background:var(--accent);color:#17130d;padding:12px 18px;border-radius:8px;font-weight:bold;opacity:0;transform:translateY(10px);transition:.25s;pointer-events:none;z-index:20}
+    #toast.show{opacity:1;transform:translateY(0)}
+    @media(max-width:800px){.hero{grid-template-columns:1fr;padding:48px 0}.hero-art{min-height:280px}.products{grid-template-columns:repeat(2,1fr)}.about{grid-template-columns:1fr}nav{gap:13px}}
+    @media(max-width:560px){.nav{height:auto;min-height:68px;flex-wrap:wrap;padding:12px 0}nav{order:3;width:100%;justify-content:space-between;font-size:.85rem}.products{grid-template-columns:1fr}.product img{height:240px}.features{grid-template-columns:1fr}.section-head{display:block}.contact{display:block}.contact .btn{margin-top:18px}.hero{padding-top:35px}}
+  </style>
+</head>
+<body>
+<header>
+  <div class="wrap nav">
+    <a class="logo" href="#">Music<span> Whale</span></a>
+    <nav><a href="#home">Home</a><a href="#products">products</a><a href="#about">About Us</a><a href="#contact">Contact Us</a></nav>
+    <div class="cart"> Shopping cart <b id="cart-count">0</b></div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap hero" id="home">
+    <div>
+      <div class="eyebrow">Guitar • Gear • Sound</div>
+      <h1>FIND YOUR<br><em>OWN SOUND.</em></h1>
+      <p>A space for music lovers, featuring electric guitars, accessories, and items to help transform every musical idea into your unique sound.</p>
+      <div class="actions"><a class="btn primary" href="#products">Choose to view products</a><a class="btn secondary" href="#about">Get to know our shop</a></div>
+    </div>
+    <div class="hero-art">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7jNjt1OZFOgLSGdxOmz8kygx34i1GmWGfIICF0m_sCf0yw0zPysPO7wtQ&s=10" alt="electric guitar on stage">
+      <div class="hero-label"><strong>Second Voices</strong><br><small>Great equipment for your personalized sound.</small></div>
+    </div>
+  </div>
+
+  <section id="products">
+    <div class="wrap">
+      <div class="section-head"><div><div class="eyebrow">OUR COLLECTION</div><h2>Recommended products</h2><p>Choose the right equipment and create your own sound.</p></div></div>
+      <div class="filters">
+        <button class="filter active" data-filter="all">all</button>
+        <button class="filter" data-filter="guitar">Guitars</button>
+        <button class="filter" data-filter="amp">Amp</button>
+        <button class="filter" data-filter="accessory">Accessories</button>
+      </div>
+      <div class="products" id="product-list">
+        <article class="product" data-category="guitar">
+          <img src="https://us.donnermusic.com/cdn/shop/files/HLX500all.png?v=1782975478&width=800" alt="electric guitar">
+          <div class="product-info"><span class="tag">ELECTRIC GUITAR</span><h3>Donner HLX500</h3><p>Popular headless electric guitar from Donner is designed to meet the needs of modern musicians, emphasizing portability, lightweight design, and stable tuning.</p><div class="product-bottom"><span class="price">฿7,990</span><button class="add" data-name="Donner HLX500">Add to cart</button></div></div>
+        </article>
+        <article class="product" data-category="guitar">
+          <img src="https://media.ctmusicshop.com/wp-content/uploads/2021/11/26093436/IMG_9892-copy-500x750.avif" alt="electric guitar">
+          <div class="product-info"><span class="tag">ELECTRIC GUITAR</span><h3>Leeky X20</h3><p>This modern headless electric guitar from Leeky stands out with its lightweight design (approximately 2 kg) and professional-grade materials.</p><div class="product-bottom"><span class="price">฿32,000</span><button class="add" data-name="Leeky X20">Add to Cart</button></div></div>
+        </article>
+        <article class="product" data-category="amp">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSRxDeYpjqEu-zjqEfwfYZ7iiYnI5-iEm4551_A6k8pJw&s=10" alt="electric guitar amp">
+          <div class="product-info"><span class="tag">AMPLIFIER</span><h3>Fender ’65 Twin Reverb</h3><p>A true Fender classic prized by guitarists worldwide for decades and one of the greatest backline amps ever made. The mid-’60s Twin Reverb has seen action in every imaginable venue and remains indispensable to this day. Be it rock, blues, country, jazz or anything else, this is what clean electric guitar sounds like. With its dual 12″ speakers, timeless look and essential sound, the ’65 Twin Reverb® is a truly magnificent tone machine that takes you back to an electrifying era with defining Fender sound and style.</p><div class="product-bottom"><span class="price">฿81,000</span><button class="add" data-name="Fender ’65 Twin Reverb">Add to Cart</button></div></div>
+        </article>
+        <article class="product" data-category="accessory">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQv7kXThvmJVUxeaT0zaccfSMmY7BwsHUz0b7peK3Katvoqm-2GwMYxdM4&s=10" alt="guitar effects">
+          <div class="product-info"><span class="tag">Multi-Effects Processor</span><h3>Line 6 Helix Stadium</h3><p>The Line 6 Helix Stadium is Line 6's flagship multi-effects series for electric guitars, featuring new sound technology and a modern design.</p><div class="product-bottom"><span class="price">฿78,900</span><button class="add" data-name="Drive Tone Pedal">Add to Cart</button></div></div>
+        </article>
+        <article class="product" data-category="accessory">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFgcTaW4PtVLpjLXyvyZpsA7t5qqBOH0eKzMYqZb_ecw&s" alt="guitar strings">
+          <div class="product-info"><span class="tag">ACCESSORY</span><h3>DR Strings VTE-9/46 Veritas Electric Guitar Strings – .009-.046 Light to Medium</h3><p>a set of 6-string electric guitar strings featuring a "Light to Medium" hybrid gauge (0.009 to 0.046) designed for enhanced output, brighter tone, and extended string life.</p><div class="product-bottom"><span class="price">฿390</span><button class="add" data-name="DR Strings">Add to Cart</button></div></div>
+        </article>
+        <article class="product" data-category="accessory">
+          <img src="https://down-th.img.susercontent.com/file/th-11134207-7r991-lzxhj2b9sotl48" alt="Music equipment">
+          <div class="product-info"><span class="tag">ACCESSORY</span><h3>Zine Auguzt Cables</h3><p>ZINE's product line of instrument and patch cables is popular among Thai musicians.</p><div class="product-bottom"><span class="price">฿890</span><button class="add" data-name="Instrumments Cables">Add to Cart</button></div></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <div class="feature-band"><div class="wrap features">
+    <div class="feature"><div class="icon">♫</div><strong>Select quality equipment</strong><p>Choose products that suit both beginners and musicians.</p></div>
+    <div class="feature"><div class="icon">✦</div><strong>Advice from experts</strong><p>We're here to help you choose the right equipment to suit your playing style.</p></div>
+    <div class="feature"><div class="icon">⌁</div><strong>Complete every idea</strong><p>We provide equipment for you to experiment and discover your own unique voice.</p></div>
+  </div></div>
+
+  <section id="about"><div class="wrap about">
+    <img src="https://i0.wp.com/www.saitoguitars.com/wp-content/uploads/2025/05/DSC08074-Enhanced-NR-e_R-scaled.jpg?ssl=1" alt="The musician is playing the guitar.">
+    <div><div class="eyebrow">WHO WE ARE</div><h2>More than just a music store.</h2><p>MusicWhale was born from a passion for music. We believe that each musical instrument is unique and allows players to express themselves through music.</p><p>Whether you're just starting out or have been playing music for a long time, we want to be a part of your musical journey.</p><p>"Modern times often say, 'Do what you love.' I think that's not right. But if you say, 'Love what you do,' that's more accurate." by Vinai Trinateeakdee</p></div>
+  </div></section>
+
+  <section id="contact"><div class="wrap contact">
+    <div><div class="eyebrow">LET'S TALK MUSIC</div><h2>Looking for a new sound?</h2><p>For product inquiries and further details, please contact us through our channels.</p></div>
+    <a class="btn primary" href="mailto:hello@stringtheory.example">Contact the store</a>
+  </div></section>
+</main>
+<footer><div class="wrap footer-inner"><span>© 2026 STRING THEORY. All rights reserved.</span><span>Guitar • Gear • Sound</span></div></footer>
+<div id="toast" role="status"></div>
+<script>
+  let cartCount = 0;
+  const count = document.getElementById('cart-count');
+  const toast = document.getElementById('toast');
+  let toastTimer;
+  document.querySelectorAll('.add').forEach(button => {
+    button.addEventListener('click', () => {
+      cartCount++;
+      count.textContent = cartCount;
+      toast.textContent = `Add ${button.dataset.name} Added to cart`;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
+    });
+  });
+  document.querySelectorAll('.filter').forEach(button => {
+    button.addEventListener('click', () => {
+      document.querySelectorAll('.filter').forEach(item => item.classList.remove('active'));
+      button.classList.add('active');
+      const category = button.dataset.filter;
+      document.querySelectorAll('.product').forEach(product => {
+        product.style.display = category === 'all' || product.dataset.category === category ? '' : 'none';
+      });
+    });
+  });
+</script>
+</body>
+</html>
